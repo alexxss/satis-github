@@ -58,7 +58,7 @@ jobs:
     - name: Build Satis
       env:
         PACKAGE_NAME: '${{ github.event.inputs.package_name }}'
-        SATIS_HOMEPAGE: '${{ steps.deployment.outputs.page_url }}'
+        # SATIS_HOMEPAGE: '${{ steps.deployment.outputs.page_url }}'
       run: composer satis:build satis.json data/build $PACKAGE_NAME
 
     - name: Upload built output for deploy
