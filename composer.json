@@ -1,0 +1,15 @@
+{
+    "name": "astralweb/packages",
+    "description": "Packages repository",
+    "license": "MIT",
+    "require": {
+        "composer/satis": "dev-main",
+        "symfony/process": "^6.2"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/satis": true
+        },
+        "cache-dir": "composer-cache"
+    }
+}

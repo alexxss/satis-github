@@ -1,0 +1,27 @@
+{
+    "name": "astralweb/repo",
+    "homepage": "https://example.com",
+    "repositories": [
+        {
+            "name": "astralweb/module-sms",
+            "type": "vcs",
+            "url": "git@github.com:AstralWebTW/M2-Sms.git"
+        },
+        {
+            "name": "astralweb/module-config-banner",
+            "type": "vcs",
+            "url": "git@github.com:AstralWebTW/M2-ConfigBanner.git"
+        },
+        {
+            "name": "astralweb/module-product-tag",
+            "type": "vcs",
+            "url": "git@github.com:AstralWebTW/M2-ProductTag.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/AstralWebTW/M2-Menu.git",
+            "name": "astralweb/module-menu"
+        }
+    ],
+    "require-all": true
+}

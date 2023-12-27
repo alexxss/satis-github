@@ -1,0 +1,7 @@
+*
+!.gitattributes
+!.gitignore
+!.github/workflows/deploy.yml
+!composer.json
+!satis.json
+!README.md
