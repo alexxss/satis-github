@@ -3,7 +3,7 @@
     "description": "Packages repository",
     "license": "MIT",
     "require": {
-        "composer/satis": "dev-main",
+        "composer/satis": "main",
         "symfony/process": "^6.2"
     },
     "config": {
