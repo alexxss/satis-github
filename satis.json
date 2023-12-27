@@ -1,6 +1,9 @@
 {
     "name": "astralweb/repo",
     "homepage": "https://example.com",
+    "archive": {
+        "prefix-url": "https://alexxss.github.io/satis-github/p2"
+    },
     "repositories": [
         {
             "name": "astralweb/module-sms",
