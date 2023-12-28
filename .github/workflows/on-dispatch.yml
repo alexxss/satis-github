@@ -1,8 +1,6 @@
 name: Dispatched
 on:
   push:
-    tags:
-      - '*'
     paths:
       - ".github/workflows/on-dispatch.yml"
   watch:
