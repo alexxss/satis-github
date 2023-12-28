@@ -47,6 +47,15 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-satis-
 
+    - name: Cache Satis output
+      id: output-cache
+      uses: actions/cache@v3
+      with:
+        path: data/build
+        key: ${{ runner.os }}-output-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-output-
+
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
