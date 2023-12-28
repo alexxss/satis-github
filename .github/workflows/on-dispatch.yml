@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - ".github/workflows/on-dispatch.yml"
-  watch:
+  repository_dispatch:
 
 jobs:
   test:
