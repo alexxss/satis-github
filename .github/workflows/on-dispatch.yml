@@ -14,12 +14,21 @@ jobs:
       - env:
           EVENT: ${{ toJson(github.event) }}
         run: echo $EVENT
-  dispatch:
+  # dispatch:
+  #   runs-on: ubuntu-latest
+  #   permissions: "write-all"
+  #   steps:
+  #     - env:
+  #         ACCEPT_HEADER: "Accept: application/vnd.github+json"
+  #         AUTH_HEADER: "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
+  #         JSON_CONTENT: '{"event_type":"dispatch","client_payload":{"package_name": "${{ vars.PACKAGE_NAME }}"}}'
+  #       run: curl -L -X POST -H "$ACCEPT_HEADER" -H "$AUTH_HEADER" https://api.github.com/repos/alexxss/satis-github/dispatches -d "$JSON_CONTENT"
+  trigger:
     runs-on: ubuntu-latest
     permissions: "write-all"
     steps:
       - env:
-          ACCEPT_HEADER: "Accept: application/vnd.github+json"
-          AUTH_HEADER: "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
-          JSON_CONTENT: '{"event_type":"dispatch","client_payload":{"package_name": "${{ vars.PACKAGE_NAME }}"}}'
-        run: curl -L -X POST -H "$ACCEPT_HEADER" -H "$AUTH_HEADER" https://api.github.com/repos/alexxss/satis-github/dispatches -d "$JSON_CONTENT"
+          API: "https://api.github.com/repos/alexxss/satis-github/actions/workflows/deploy.yml/dispatches"
+          JSON_CONTENT: '{"package_name": "${{ vars.PACKAGE_NAME }}"}'
+        run: |
+          curl -L -X POST -H 'Accept: application/vnd.github+json' -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" $API -d "$JSON_CONTENT"
