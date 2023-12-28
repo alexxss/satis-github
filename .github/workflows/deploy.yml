@@ -10,6 +10,7 @@ on:
       package_name:
         description: 'eg "astralweb/module-config-banner", must be same as defined in satis.json.'
         required: true
+  repository_dispatch:
 
 permissions:
   contents: read
@@ -66,7 +67,7 @@ jobs:
 
     - name: Build Satis
       env:
-        PACKAGE_NAME: '${{ github.event.inputs.package_name }}'
+        PACKAGE_NAME: '${{ github.event.inputs.package_name || github.event.client_payload.package_name }}'
         # SATIS_HOMEPAGE: '${{ steps.deployment.outputs.page_url }}'
       run: composer satis:build satis.json data/build $PACKAGE_NAME
 
@@ -100,13 +101,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-  dispatch:
-    runs-on: ubuntu-latest
-    permissions: "write-all"
-    steps:
-      - env:
-          ACCEPT_HEADER: "Accept: application/vnd.github+json"
-          AUTH_HEADER: "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
-          API_VERSION_HEADER: "X-GitHub-Api-Version: 2022-11-28"
-          JSON_CONTENT: '{"event_type":"dispatch","client_payload":{"package_name": "${{ vars.PACKAGE_NAME }}"}}'
-        run: curl -L -X POST -H "$ACCEPT_HEADER" -H "$AUTH_HEADER" https://api.github.com/repos/alexxss/satis-github/dispatches -d "$JSON_CONTENT"
