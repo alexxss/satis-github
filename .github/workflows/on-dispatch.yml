@@ -1,12 +1,16 @@
 name: Dispatched
 on:
-  repository_dispatch:
-    types: [build]
+  push:
+    tags:
+      - '*'
+    paths:
+      - ".github/workflows/on-dispatch.yml"
+  watch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - env:
-          ACTION: ${{ github.event.action }}
-        run: echo $ACTION
+          EVENT: ${{ toJson(github.event) }}
+        run: echo $EVENT
