@@ -1,0 +1,12 @@
+name: Dispatched
+on:
+  repository_dispatch:
+    types: [build]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          ACTION: ${{ github.event.action }}
+        run: echo $ACTION
