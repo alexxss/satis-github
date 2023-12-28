@@ -12,3 +12,4 @@ jobs:
       - env:
           EVENT: ${{ toJson(github.event) }}
         run: echo $EVENT
+      - run: echo ${{ secrets.GITHUB_TOKEN }}
