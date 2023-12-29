@@ -1,15 +1,14 @@
 name: Dispatched
 on:
-  push:
-    paths:
-      - ".github/workflows/on-dispatch.yml"
   workflow_call:
     inputs:
       package_name:
         description: 'eg "astralweb/module-config-banner", must be same as defined in satis.json.'
         required: true
         type: string
-  workflow_dispatch:
+    secrets:
+      PAT_TOKEN:
+        required: true
 
 jobs:
   test:
@@ -35,4 +34,4 @@ jobs:
           API: "https://api.github.com/repos/alexxss/satis-github/actions/workflows/deploy.yml/dispatches"
           JSON_CONTENT: '{"ref":"main", "inputs":{"package_name": "${{ inputs.package_name }}"}}'
         run: |
-          curl -L -X POST -H 'Accept: application/vnd.github+json' -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" $API -d "$JSON_CONTENT"
+          curl -L -X POST -H 'Accept: application/vnd.github+json' -H "Authorization: Bearer ${{ secrets.PAT_TOKEN }}" $API -d "$JSON_CONTENT"
