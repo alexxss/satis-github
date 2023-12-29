@@ -43,7 +43,9 @@ jobs:
       id: satis-cache-restore
       uses: actions/cache/restore@v3
       with:
-        path: composer-cache
+        path:  |
+          vendor
+          composer.lock
         key: ${{ runner.os }}-satis-
 
     - name: Cache Satis output
@@ -67,23 +69,25 @@ jobs:
         # SATIS_HOMEPAGE: '${{ steps.deployment.outputs.page_url }}'
       run: composer satis:build satis.json data/build $PACKAGE_NAME
 
-    - name: Cache Composer packages 
+    - name: Post Cache Composer packages 
       id: composer-cache-save
-      uses: actions/cache/restore@v3
+      uses: actions/cache/save@v3
       with:
-        path: vendor
+        path: |
+          vendor
+          composer.lock
         key: ${{ runner.os }}-php-${{ hashFiles('composer.lock') }}
 
-    - name: Cache Satis packages
+    - name: Post Cache Satis packages
       id: satis-cache-save
-      uses: actions/cache/restore@v3
+      uses: actions/cache/save@v3
       with:
         path: composer-cache
         key: ${{ runner.os }}-satis-${{ hashFiles('composer-cache/**') }}
 
-    - name: Cache Satis output
+    - name: Post Cache Satis output
       id: output-cache-save
-      uses: actions/cache/restore@v3
+      uses: actions/cache/save@v3
       with:
         path: data/build
         key: ${{ runner.os }}-output-${{ hashFiles('data/build/**.json') }}
