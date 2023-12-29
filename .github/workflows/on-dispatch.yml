@@ -40,7 +40,7 @@ jobs:
         with:
           github-token: ${{ secrets.PAT_TOKEN }}
           script: |
-            github.rest.actions.createWorkFlowDispatch({
+            github.rest.actions.createWorkflowDispatch({
               owner: 'alexxss',
               repo: 'satis-github',
               workflow_id: 'deploy.yml',
