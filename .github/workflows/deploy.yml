@@ -73,11 +73,15 @@ jobs:
         # SATIS_HOMEPAGE: '${{ steps.deployment.outputs.page_url }}'
       run: composer satis:build satis.json data/build $PACKAGE_NAME
 
-    - name: Upload built output for deploy
-      uses: actions/upload-artifact@v3
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        name: output
-        path: data/build
+        path: 'data/build'
+    # - name: Upload built output for deploy
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: output
+    #     path: data/build
 
   deploy:
     needs: build
@@ -86,19 +90,19 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Download built output for deploy
-        uses: actions/download-artifact@v3
-        with:
-          name: output
-          path: output
+      # - name: Download built output for deploy
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: output
+      #     path: output
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: 'output'
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: 'output'
 
       - name: Deploy to GitHub Pages
         id: deployment
