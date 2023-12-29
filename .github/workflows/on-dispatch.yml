@@ -45,4 +45,7 @@ jobs:
               repo: 'satis-github',
               workflow_id: 'deploy.yml',
               ref: 'main',
+              inputs: {
+                package_name: ${{ vars.package_name }}
+              },
             })
