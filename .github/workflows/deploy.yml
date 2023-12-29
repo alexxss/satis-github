@@ -32,32 +32,26 @@ jobs:
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3
+    - name: Cache Composer packages 
+      id: composer-cache-restore
+      uses: actions/cache/restore@v3
       with:
         path: vendor
-        key: ${{ runner.os }}-php-${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+        key: ${{ runner.os }}-php-
 
     - name: Cache Satis packages
-      id: satis-cache
-      uses: actions/cache@v3
+      id: satis-cache-restore
+      uses: actions/cache/restore@v3
       with:
         path: composer-cache
-        key: ${{ runner.os }}-satis-${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}
-        restore-keys: |
-          ${{ runner.os }}-satis-
+        key: ${{ runner.os }}-satis-
 
     - name: Cache Satis output
-      id: output-cache
-      uses: actions/cache@v3
+      id: output-cache-restore
+      uses: actions/cache/restore@v3
       with:
         path: data/build
-        key: ${{ runner.os }}-output-${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}
-        restore-keys: |
-          ${{ runner.os }}-output-
+        key: ${{ runner.os }}-output-
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
@@ -73,15 +67,31 @@ jobs:
         # SATIS_HOMEPAGE: '${{ steps.deployment.outputs.page_url }}'
       run: composer satis:build satis.json data/build $PACKAGE_NAME
 
+    - name: Cache Composer packages 
+      id: composer-cache-save
+      uses: actions/cache/restore@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('composer.lock') }}
+
+    - name: Cache Satis packages
+      id: satis-cache-save
+      uses: actions/cache/restore@v3
+      with:
+        path: composer-cache
+        key: ${{ runner.os }}-satis-${{ hashFiles('composer-cache/**') }}
+
+    - name: Cache Satis output
+      id: output-cache-save
+      uses: actions/cache/restore@v3
+      with:
+        path: data/build
+        key: ${{ runner.os }}-output-${{ hashFiles('data/build/**.json') }}
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
         path: 'data/build'
-    # - name: Upload built output for deploy
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: output
-    #     path: data/build
 
   deploy:
     needs: build
@@ -90,19 +100,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      # - name: Download built output for deploy
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: output
-      #     path: output
-
       - name: Setup Pages
         uses: actions/configure-pages@v4
-
-      # - name: Upload artifact
-      #   uses: actions/upload-pages-artifact@v3
-      #   with:
-      #     path: 'output'
 
       - name: Deploy to GitHub Pages
         id: deployment
